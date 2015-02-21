@@ -42,6 +42,7 @@ postulate
 -- least version 3) the functions use ISO-8859-1.
 
 postulate
+  Handle      : Set
   getContents : IO Costring
   readFile    : String → IO Costring
   writeFile   : String → Costring → IO Unit
@@ -54,6 +55,8 @@ postulate
 
   readFiniteFile : String → IO String
 
+{-# IMPORT System.IO #-}
+{-# COMPILED_TYPE Handle    System.IO.Handle      #-}
 {-# COMPILED getContents    getContents           #-}
 {-# COMPILED readFile       readFile              #-}
 {-# COMPILED writeFile      writeFile             #-}
