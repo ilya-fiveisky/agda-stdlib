@@ -43,6 +43,9 @@ postulate
 
 postulate
   Handle      : Set
+  hClose      : Handle → IO Unit
+  hGetLine    : Handle → IO Costring
+  hPutStrLn   : Handle → Costring → IO Unit
   getContents : IO Costring
   readFile    : String → IO Costring
   writeFile   : String → Costring → IO Unit
@@ -57,6 +60,9 @@ postulate
 
 {-# IMPORT System.IO #-}
 {-# COMPILED_TYPE Handle    System.IO.Handle      #-}
+{-# COMPILED hClose         System.IO.hClose      #-}
+{-# COMPILED hGetLine       System.IO.hGetLine    #-}
+{-# COMPILED hPutStrLn      System.IO.hPutStrLn   #-}
 {-# COMPILED getContents    getContents           #-}
 {-# COMPILED readFile       readFile              #-}
 {-# COMPILED writeFile      writeFile             #-}

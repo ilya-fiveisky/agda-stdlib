@@ -120,3 +120,19 @@ putStrLn∞ s =
 
 putStrLn : String → IO ⊤
 putStrLn s = putStrLn∞ (toCostring s)
+
+hClose : Prim.Handle → IO ⊤
+hClose h =
+  ♯ lift (Prim.hClose h) >>
+  ♯ return _
+
+hGetLine∞ : Prim.Handle → IO Costring
+hGetLine∞ h = lift (Prim.hGetLine h)
+
+hPutStrLn∞ : Prim.Handle → Costring → IO ⊤
+hPutStrLn∞ h s =
+  ♯ lift (Prim.hPutStrLn h s) >>
+  ♯ return _
+
+hPutStrLn : Prim.Handle → String → IO ⊤
+hPutStrLn h s = hPutStrLn∞ h (toCostring s)
