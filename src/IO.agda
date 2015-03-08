@@ -126,8 +126,8 @@ hClose h =
   ♯ lift (Prim.hClose h) >>
   ♯ return _
 
-hGetLine∞ : Prim.Handle → IO Costring
-hGetLine∞ h = lift (Prim.hGetLine h)
+hGetLine : Prim.Handle → IO Costring
+hGetLine h = lift (Prim.hGetLine h)
 
 hPutStrLn∞ : Prim.Handle → Costring → IO ⊤
 hPutStrLn∞ h s =

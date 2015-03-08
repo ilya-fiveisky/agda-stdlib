@@ -21,7 +21,7 @@ postulate
   plusOne : Integer → Integer
 
 {-# COMPILED_TYPE Integer Integer #-}
-{-# COMPILED #0   (0 :: Integer)      #-}
+{-# COMPILED #0   (0 :: Integer)  #-}
 {-# COMPILED plusOne \n -> n+1    #-}
 
 toInteger : ℕ → Integer
