@@ -136,3 +136,8 @@ hPutStrLn∞ h s =
 
 hPutStrLn : Prim.Handle → String → IO ⊤
 hPutStrLn h s = hPutStrLn∞ h (toCostring s)
+
+hSetBuffering : Prim.Handle → Prim.BufferMode → IO ⊤
+hSetBuffering h m =
+  ♯ lift (Prim.hSetBuffering h m) >>
+  ♯ return _

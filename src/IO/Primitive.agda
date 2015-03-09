@@ -7,6 +7,7 @@
 module IO.Primitive where
 
 open import Data.Char
+open import Data.Maybe
 open import Data.String
 open import Foreign.Haskell
 
@@ -42,10 +43,21 @@ postulate
 -- least version 3) the functions use ISO-8859-1.
 
 postulate
+  Int : Set
+
+{-# COMPILED_TYPE Int Int #-}
+
+data BufferMode : Set where
+  NoBuffering    : BufferMode
+  LineBuffering  : BufferMode
+  BlockBuffering : Maybe Int → BufferMode
+
+postulate
   Handle      : Set
   hClose      : Handle → IO Unit
   hGetLine    : Handle → IO Costring
   hPutStrLn   : Handle → Costring → IO Unit
+  hSetBuffering : Handle -> BufferMode -> IO Unit
   getContents : IO Costring
   readFile    : String → IO Costring
   writeFile   : String → Costring → IO Unit
@@ -63,6 +75,8 @@ postulate
 {-# COMPILED hClose         System.IO.hClose      #-}
 {-# COMPILED hGetLine       System.IO.hGetLine    #-}
 {-# COMPILED hPutStrLn      System.IO.hPutStrLn   #-}
+{-# COMPILED_DATA BufferMode System.IO.BufferMode NoBuffering LineBuffering BlockBuffering  #-}
+{-# COMPILED hSetBuffering  System.IO.hSetBuffering #-}
 {-# COMPILED getContents    getContents           #-}
 {-# COMPILED readFile       readFile              #-}
 {-# COMPILED writeFile      writeFile             #-}
