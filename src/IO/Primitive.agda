@@ -75,7 +75,7 @@ postulate
 {-# COMPILED hClose         System.IO.hClose      #-}
 {-# COMPILED hGetLine       System.IO.hGetLine    #-}
 {-# COMPILED hPutStrLn      System.IO.hPutStrLn   #-}
-{-# COMPILED_DATA BufferMode System.IO.BufferMode NoBuffering LineBuffering BlockBuffering  #-}
+{-# COMPILED_DATA BufferMode System.IO.BufferMode System.IO.NoBuffering System.IO.LineBuffering System.IO.BlockBuffering  #-}
 {-# COMPILED hSetBuffering  System.IO.hSetBuffering #-}
 {-# COMPILED getContents    getContents           #-}
 {-# COMPILED readFile       readFile              #-}
