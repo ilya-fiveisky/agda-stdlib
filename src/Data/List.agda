@@ -317,4 +317,7 @@ private
   mapM : ∀ {a} {A : Set a} {B} → (A → M B) → List A → M (List B)
   mapM f = sequence ∘ map f
 
+  replicateM : ∀ {A} → (n : ℕ) → M A → M (List A)
+  replicateM n = sequence ∘ replicate n
+
 open Monadic public
