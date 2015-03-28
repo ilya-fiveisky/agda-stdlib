@@ -29,6 +29,12 @@ data BoundedVec {a} (A : Set a) : ℕ → Set a where
 ↑ []       = []
 ↑ (x ∷ xs) = x ∷ ↑ xs
 
+↑↑ : ∀ {a} {A : Set a} {m n} → (m ≤ n) → BoundedVec A m → BoundedVec A n
+↑↑ {m = zero} _ _ = []
+↑↑ {n = zero} _ _ = []
+↑↑ _ [] = []
+↑↑ {_} {_} {suc m} {suc n} (s≤s m≤n) (x ∷ xs) = x ∷ (↑↑ {_} {_} {m} {n} m≤n xs)
+
 ------------------------------------------------------------------------
 -- Conversions
 
