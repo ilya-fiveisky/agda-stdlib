@@ -6,6 +6,7 @@
 *.lagda.el
 *.hi
 *.o
+*~
 dist
 Everything.agda
 html
