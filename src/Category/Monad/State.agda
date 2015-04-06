@@ -13,7 +13,7 @@ open import Category.Monad.Indexed
 open import Data.Product
 open import Data.Unit
 open import Function
-open import Level
+open import Level hiding (lift)
 
 ------------------------------------------------------------------------
 -- Indexed state monads
@@ -115,3 +115,7 @@ LiftMonadState S₂ Mon = record
   ; put   = λ s′ s → put s′ >> return (_ , s)
   }
   where open RawIMonadState Mon
+
+lift : ∀ {a} {A S : Set a} {M : Set a → Set a} → {{Mon : RawMonad M}} → (m : M A) → StateT S M A
+lift {{Mon = Mon}} m = λ s → (m >>= λ x → return (x , s))
+  where open RawMonad Mon
