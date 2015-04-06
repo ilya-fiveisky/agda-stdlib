@@ -120,6 +120,12 @@ lift : ∀ {a} {A S : Set a} {M : Set a → Set a} → {{Mon : RawMonad M}} → 
 lift {{Mon = Mon}} m = λ s → (m >>= λ x → return (x , s))
   where open RawMonad Mon
 
-evalStateT : ∀ {a} {A S : Set a} {M : Set a → Set a} → {{Mon : RawMonad M}} → StateT S M A → S → M A
-evalStateT {{Mon = Mon}} stm s = stm s >>= return ∘ proj₁
+runStateT : ∀ {a} {A S T : Set a} {M : Set a → Set a} → {{Mon : RawMonad M}} → (A × S → T) → StateT S M A → S → M _
+runStateT {{Mon = Mon}} f stm s = stm s >>= return ∘ f
   where open RawMonad Mon
+
+evalStateT : ∀ {a} {A S : Set a} {M : Set a → Set a} → {{Mon : RawMonad M}} → StateT S M A → S → M A
+evalStateT = runStateT proj₁
+
+execStateT : ∀ {a} {A S : Set a} {M : Set a → Set a} → {{Mon : RawMonad M}} → StateT S M A → S → M S
+execStateT = runStateT proj₂
