@@ -119,3 +119,7 @@ LiftMonadState S₂ Mon = record
 lift : ∀ {a} {A S : Set a} {M : Set a → Set a} → {{Mon : RawMonad M}} → (m : M A) → StateT S M A
 lift {{Mon = Mon}} m = λ s → (m >>= λ x → return (x , s))
   where open RawMonad Mon
+
+evalStateT : ∀ {a} {A S : Set a} {M : Set a → Set a} → {{Mon : RawMonad M}} → StateT S M A → S → M A
+evalStateT {{Mon = Mon}} stm s = stm s >>= return ∘ proj₁
+  where open RawMonad Mon
