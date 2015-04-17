@@ -234,3 +234,26 @@ _[_]≔_ : ∀ {a n} {A : Set a} → Vec A n → Fin n → A → Vec A n
 
 allFin : ∀ n → Vec (Fin n) n
 allFin _ = tabulate id
+
+
+------------------------------------------------------------------------
+-- Monadic functions
+
+open import Category.Monad
+
+private
+ module Monadic {m} {M : Set m → Set m} (Mon : RawMonad M) where
+
+  open RawMonad Mon renaming (_⊛_ to _⊛'_)
+
+  sequence : ∀ {n A} → Vec (M A) n → M (Vec A n)
+  sequence []       = return []
+  sequence (x ∷ xs) = _∷_ <$> x ⊛' sequence xs
+
+  mapM : ∀ {a n} {A : Set a} {B} → (A → M B) → Vec A n → M (Vec B n)
+  mapM f = sequence ∘ map f
+
+  replicateM : ∀ {A n} → M A → M (Vec A n)
+  replicateM = sequence ∘ replicate
+
+open Monadic public
