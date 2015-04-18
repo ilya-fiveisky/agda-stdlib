@@ -161,6 +161,10 @@ fromList : ∀ {a} {A : Set a} → (xs : List A) → Vec A (List.length xs)
 fromList List.[]         = []
 fromList (List._∷_ x xs) = x ∷ fromList xs
 
+transpose : ∀ {l m n} {A : Set l} → Vec (Vec A m) n → Vec (Vec A n) m
+transpose [] = replicate []
+transpose (xs ∷ xss) = zipWith _∷_ xs (transpose xss)
+
 -- Snoc.
 
 infixl 5 _∷ʳ_

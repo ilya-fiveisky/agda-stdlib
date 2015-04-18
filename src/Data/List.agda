@@ -78,6 +78,10 @@ intersperse x []           = []
 intersperse x (y ∷ [])     = [ y ]
 intersperse x (y ∷ z ∷ zs) = y ∷ x ∷ intersperse x (z ∷ zs)
 
+transpose : ∀ {l} {A : Set l} → List (List A) → List (List A)
+transpose [] = []
+transpose (xs ∷ xss) = zipWith _∷_ xs (transpose xss)
+
 -- * Reducing lists (folds)
 
 foldr : ∀ {a b} {A : Set a} {B : Set b} → (A → B → B) → B → List A → B
