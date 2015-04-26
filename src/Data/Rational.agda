@@ -9,12 +9,14 @@ module Data.Rational where
 import Algebra
 import Data.Bool.Properties as Bool
 open import Function
-open import Data.Integer as ℤ using (ℤ; ∣_∣; +_; -_)
+open import Data.Integer as ℤ using (ℤ; ∣_∣; +_; -_; sign; _◃_)
 open import Data.Integer.Divisibility as ℤDiv using (Coprime)
 import Data.Integer.Properties as ℤ
-open import Data.Nat.Divisibility as ℕDiv using (_∣_)
+open import Data.Nat.Divisibility as ℕDiv using (_∣_; quotient)
 import Data.Nat.Coprimality as C
 open import Data.Nat as ℕ using (ℕ; zero; suc)
+open import Data.Nat.GCD using (GCD; gcd)
+open import Data.Product
 open import Data.Sum
 import Level
 open import Relation.Nullary.Decidable
@@ -47,7 +49,7 @@ record ℚ : Set where
 -- Constructs rational numbers. The arguments have to be in reduced
 -- form.
 
-infixl 7 _÷_
+infixl 7 _÷_ --_÷'_
 
 _÷_ : (numerator : ℤ) (denominator : ℕ)
       {coprime : True (C.coprime? ∣ numerator ∣ denominator)}
@@ -56,7 +58,18 @@ _÷_ : (numerator : ℤ) (denominator : ℕ)
 (n ÷ zero) {≢0 = ()}
 (n ÷ suc d) {c} =
   record { numerator = n; denominator-1 = d; isCoprime = c }
-
+{-
+_÷'_ : (numerator : ℤ) (denominator : ℕ)
+      {≢0 : False (ℕ._≟_ denominator 0)} →
+      ℚ
+(n ÷' zero) {≢0 = ()}
+(n ÷' suc d) = _÷_ ((sign n) ◃ q1) q2 {C.gcd-coprime gcd-of-q1-and-q2-is-1}
+  where
+  g = proj₂ (gcd ∣ n ∣ (suc d))
+  q1 = quotient (proj₁ (GCD.commonDivisor g))
+  q2 = quotient (proj₂ (GCD.commonDivisor g))
+  gcd-of-q1-and-q2-is-1 = proj₂ (gcd q1 q2)
+-}
 private
 
   -- Note that the implicit arguments do not need to be given for
@@ -67,6 +80,13 @@ private
 
   -½ : ℚ
   -½ = - + 1 ÷ 2
+
+------------------------------------------------------------------------
+-- Arithmetic
+
+--_*_ : ℚ → ℚ → ℚ
+--q1 * q2 = (numerator q1 ℤ.* numerator q2) ÷ ∣ denominator q1 ℤ.* denominator q2 ∣
+--  where open ℚ
 
 ------------------------------------------------------------------------
 -- Equality
